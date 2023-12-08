@@ -74,8 +74,8 @@ def load_leaf_classes():
     print("################################################")
     for f in reverse_sorted_items:
         print("data_setup:load_leaf_classes:f:",f)
-        with open(class_file_path, 'a') as the_file:
-            the_file.write(str(f)+'\n')
+        with open(class_file_path, 'w') as the_file:
+            the_file.writelines(str(f))
     
     return  class_file_path    
            
