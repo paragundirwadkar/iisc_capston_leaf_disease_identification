@@ -28,6 +28,9 @@ def load_dataset_images():
     print("data_setup:load_dataset_images:config.app_config.dataset_url:",config.app_config.dataset_url,"::PACKAGE_ROOT:",PACKAGE_ROOT)
     url=config.app_config.dataset_url
     #output_directory = DATASET_DIR/"data.zip"
+    print("PACKAGE_ROOT:",PACKAGE_ROOT)
+    print("DATASET_DIR:",DATASET_DIR)
+    
     if not os.path.exists(DATASET_DIR):
         print ("data_setup:load_dataset_images:DATASET_DIR::",DATASET_DIR," NOT EXISTS")
         os.makedirs(DATASET_DIR)
@@ -48,6 +51,8 @@ def load_dataset_images():
             # into a specific location. 
             zObject.extractall( 
                 path=output_directory) 
+    
+            
  
  
 def load_leaf_classes():   
