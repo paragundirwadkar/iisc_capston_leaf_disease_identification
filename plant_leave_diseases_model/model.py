@@ -27,27 +27,15 @@ from tensorflow import keras
 from keras import backend as K
 
 # Create a function that returns a model
-def create_model(input_shape, optimizer, loss, metrics):
+def create_model(input_shape, optimizer, loss, metrics,n_classes):
     
-    '''
-    model = Sequential()
-    
-    model.add(Conv2D(32, (3, 3), padding="same",input_shape=input_shape, activation="relu"))
-    model.add(MaxPooling2D(pool_size=(3, 3)))
-    model.add(Conv2D(16, (3, 3), padding="same", activation="relu"))
-    model.add(MaxPooling2D(pool_size=(2, 2)))
-    model.add(Flatten())
-    model.add(Dense(8, activation="relu"))
-    model.add(Dense(3, activation="softmax"))
-    model.summary()
-    '''
     width=256
     height=256
     depth=3
-    n_classes =2
-    
+   
     model = Sequential()
-    inputShape = (height, width, depth)
+    inputShape = (input_shape[0], input_shape[1], input_shape[2])
+    #inputShape = inputShape
     chanDim = -1
     if K.image_data_format() == "channels_first":
        inputShape = (depth, height, width)
@@ -81,35 +69,14 @@ def create_model(input_shape, optimizer, loss, metrics):
     model.add(Dense(n_classes))
     model.add(Activation("softmax"))
     
-    #model.compile(loss = loss, optimizer = Adam(config.model_config.learning_rate),metrics=metrics)
     
-    optimizer = Adam(learning_rate=0.0001)
+    optimizer = Adam(learning_rate=config.model_config.learning_rate)
     # distribution
     model.compile(loss="binary_crossentropy", optimizer=optimizer,metrics=["accuracy"])
     
-    '''
-    inputs = keras.Input(shape=input_shape)
-    #x = keras.layers.Rescaling(1. / config.model_config.scaling_factor)(inputs)
-
-    x = keras.layers.Conv2D(filters=32, kernel_size=3, padding="same",activation="relu")(input)
-    x = keras.layers.MaxPooling2D(pool_size=2)(x)
-    x = keras.layers.Conv2D(filters=16, kernel_size=3, padding="same",activation="relu")(x)
-    x = keras.layers.MaxPooling2D(pool_size=2)(x)
-    x = keras.layers.Flatten()(x)
-    x = keras.layers.Dense(8, activation="relu")(x)
-    outputs = keras.layers.Dense(5, activation="softmax")(x)
-    model = keras.Model(inputs=inputs, outputs=outputs)
-    model.compile(loss=loss, optimizer=Adam(config.model_config.learning_rate), metrics=metrics)
-    '''
     model.summary()
     return model
 
-
-# Create model
-classifier = create_model(input_shape = config.model_config.input_shape, 
-                          optimizer = config.model_config.optimizer, 
-                          loss = config.model_config.loss, 
-                          metrics = [config.model_config.accuracy_metric])
 
 
 

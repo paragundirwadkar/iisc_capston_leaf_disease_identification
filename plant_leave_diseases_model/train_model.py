@@ -4,11 +4,10 @@ sys.path.append(str(Path(__file__).resolve().parent.parent))
 
 import numpy as np
 import pandas as pd
-
-from plant_leave_diseases_model.config.core import config
-from plant_leave_diseases_model.model import classifier
+from plant_leave_diseases_model.config.core import config,PACKAGE_ROOT,TRAINED_MODEL_DIR
+from plant_leave_diseases_model.model import create_model
 from plant_leave_diseases_model.processing.data_manager import load_train_dataset, load_validation_dataset, load_test_dataset, callbacks_and_save_model,prepare_img_data
-from plant_leave_diseases_model.processing.data_setup import test_directory,val_directory,train_directory
+from plant_leave_diseases_model.processing.data_setup import test_directory,val_directory,train_directory,class_file_path
 
 from sklearn.preprocessing import LabelBinarizer
 import cv2
@@ -18,19 +17,10 @@ from os import listdir
 from sklearn.model_selection import train_test_split
 import sklearn.preprocessing
 import pickle
+from sklearn.preprocessing import OneHotEncoder
+from plant_leave_diseases_model import __version__ as _version 
 
 default_image_size = tuple((256, 256))
-def convert_image_to_array(image_dir):
-    try:
-        image = cv2.imread(image_dir)
-        if image is not None :
-            image = cv2.resize(image, default_image_size)   
-            return img_to_array(image)
-        else :
-            return np.array([])
-    except Exception as e:
-        print(f"Error : {e}")
-        return None
     
 def run_training() -> None:
     
@@ -38,94 +28,84 @@ def run_training() -> None:
     Train the model.
     """
     #x,y=prepare_img_data(train_directory)
-    directory_root =train_directory
+    directory_root =val_directory
     image_list, label_list = [], []
-    try:
-        print("[INFO] Loading images ...")
-        root_dir = listdir(directory_root)
-        
-        for plant_folder in root_dir :
-            if not plant_folder.startswith('.DS_Store'):
-                plant_disease_folder_list = listdir(f"{directory_root}/{plant_folder}")
-                print(f"{directory_root}/{plant_folder}")
-                for plant_disease_folder in plant_disease_folder_list:
-                    if not plant_disease_folder.startswith('.DS_Store'): 
-                        image_directory = (f"{directory_root}/{plant_folder}/{plant_disease_folder}")
-                        if image_directory.endswith(".jpg") == True or image_directory.endswith(".JPG") == True:
-                            image_list.append(convert_image_to_array(image_directory))
-                            label_list.append(plant_folder)
-        print("[INFO] Image loading completed")  
-    except Exception as e:
-        print(f"Error : {e}")
+    
+    directory_root =val_directory
+    image_list, label_list = prepare_img_data(directory_root)
         
     image_size = len(image_list)
     print("image_size:",image_size)
     print("label_list:",label_list)
     print("len(image_list):",len(image_list))
     
-    
-    
+    #e_dataframe = pd.DataFrame(label_list)  
+    n_classes=5
 
-   
+    '''
     label_binarizer = LabelBinarizer()
-    image_labels = label_binarizer.fit_transform(np.array(label_list))
+    image_labels = label_binarizer.fit_transform(label_list)
     pickle.dump(label_binarizer,open('label_transform.pkl', 'wb'))
     n_classes = len(label_binarizer.classes_)
     print("n_classes::",n_classes)
     print("image_labels:",image_labels)
     print("image_labels:",np.array(image_labels))
-    
+    '''
     
     np_image_list = np.array(image_list, dtype=np.float16) / 255.0
     
     print("np_image_list.shape:",np_image_list.shape)
-    print("image_labels.shape:",image_labels.shape)
+    #print("image_labels.shape:",image_labels.shape)
+    
+   
+    text_file = open(class_file_path, "r")
+    img_classes = text_file.readlines()
+    print (img_classes)
+    print ("length:",len(img_classes),"::img_classes:",img_classes[0])
+    text_file.close()
+   
+    leaf_disease_classes_from_input = pd.DataFrame(label_list,columns=['class'])
+    print("leaf_disease_classes_from_input:",leaf_disease_classes_from_input)
+    
+    img_classes = config.model_config.leaf_class_master_category_list 
+    leaf_disease_master_classes = pd.DataFrame(img_classes,columns=['class'])
+    print("leaf_disease_master_classes:",leaf_disease_master_classes)
+    
+    
+    
+    ohe = OneHotEncoder()
+    ohe.fit(leaf_disease_master_classes[['class']])
+    transformed = ohe.transform(leaf_disease_classes_from_input[['class']])
+    #transformed = ohe.fit_transform(e_dataframe[['class']])
+    print(transformed.toarray())
+    print("len of final classes:",len(transformed.toarray()))
+    #print(transformed)
+    
+    n_classes = len(leaf_disease_master_classes)
+    
+    print("n_classes::",n_classes)
+    print("config.model_config.input_shape::",tuple(config.model_config.input_shape))
+    # Create model
+    model = create_model(input_shape = config.model_config.input_shape, 
+                          optimizer = config.model_config.optimizer, 
+                          loss = config.model_config.loss, 
+                          metrics = [config.model_config.accuracy_metric],
+                          n_classes = n_classes
+                        )
 
-    '''
-    x_train, x_test, y_train, y_test = train_test_split(np_image_list, image_labels, test_size=0.2, random_state = 42) 
-    
-    
-    print("x_train:shape::",x_train.shape)
-    print("y_train:shape::",y_train.shape)
-    #for i in y:
-    #    print("i:",i)
-        
-    #for i in x:
-    #    print("xi:",i)  
-        
-    #classifier.fit()
-    
-    #print("x_train:",x_train.shape,"::length:",len(x_train))
-    #$print("y_train:",y_train.shape,"::length:",len(y_train))
-    
-    
-    history = classifier.fit(
-    np_image_list, encoded_arr, batch_size=5,
+
+    history = model.fit(
+    np_image_list, transformed.toarray(), batch_size=5,
     #validation_data=(x_test, y_test),
     #steps_per_epoch=len(x_train) // 5,
+    #callbacks = callbacks_and_save_model(),
     epochs=1
     )
-    '''
-
+    
+    save_file_name = f"{config.app_config.model_save_file}{_version}.keras"
+    model.save(str(TRAINED_MODEL_DIR)+"/"+str(save_file_name))
           
     
-    #train_data = load_train_dataset()
-    #val_data = load_validation_dataset()
-    #test_data = load_test_dataset()
-
-    '''
-    # Model fitting
-    classifier.fit(train_data,
-                   epochs = config.model_config.epochs,
-                   validation_data = val_data,
-                   callbacks = callbacks_and_save_model(),
-                   verbose = config.model_config.verbose
-                   )
-    '''
-    # Calculate the score/error
-    #test_loss, test_acc = classifier.evaluate(test_data)
-    #print("Loss:", test_loss)
-    #print("Accuracy:", test_acc)
     
     
 if __name__ == "__main__":

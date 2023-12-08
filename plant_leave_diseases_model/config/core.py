@@ -24,6 +24,9 @@ DOWNLOAD_PATH = "plant_leaf_diseases_dataset_with_augmentation"
 DATA_STORE_PATH = "datasets/data"
 DATA_STORE_FILE = "data.zip"
 
+
+
+
 class AppConfig(BaseModel):
     """
     Application-level config.
@@ -70,7 +73,8 @@ class ModelConfig(BaseModel):
     no_of_img_per_class_test: int
     no_of_img_per_class_train: int
     no_of_img_per_class_val: int
-
+    #leaf_class_category_mappings: Dict[str, int]
+    leaf_class_master_category_list: List[str]
 class Config(BaseModel):
     """Master config object."""
 

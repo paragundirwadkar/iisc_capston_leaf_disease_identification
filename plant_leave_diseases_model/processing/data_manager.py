@@ -50,14 +50,16 @@ def callbacks_and_save_model():
     callback_list = []
     
     # Prepare versioned save file name
-    save_file_name = f"{config.app_config.model_save_file}{_version}"
+    save_file_name = f"{config.app_config.model_save_file}{_version}.keras"
     save_path = TRAINED_MODEL_DIR / save_file_name
+    print("save_path::",save_path)
+    save_path = "model_save.keras"
 
-    remove_old_model(files_to_keep = [save_file_name])
+    #remove_old_model(files_to_keep = [save_file_name])
 
     # Default callback
     callback_list.append(keras.callbacks.ModelCheckpoint(filepath = save_path,
-                                                         save_best_only = config.model_config.save_best_only,
+                                                         #save_best_only = config.model_config.save_best_only,
                                                          monitor = config.model_config.monitor))
 
     if config.model_config.earlystop > 0:
