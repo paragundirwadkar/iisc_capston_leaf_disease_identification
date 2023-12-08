@@ -72,9 +72,13 @@ def load_leaf_classes():
     reverse_sorted_items = sorted_directory_listing(output_data_img_directory)
     print ("data_setup:load_leaf_classes:reverse_sorted_items:",reverse_sorted_items)
     print("################################################")
+    if os.path.exists(class_file_path):
+        os.remove(class_file_path)
+    else:
+        print("The file does not exist:",class_file_path)
     for f in reverse_sorted_items:
         print("data_setup:load_leaf_classes:f:",f)
-        with open(class_file_path, 'w') as the_file:
+        with open(class_file_path, 'a') as the_file:
             the_file.writelines(str(f))
     
     return  class_file_path    
