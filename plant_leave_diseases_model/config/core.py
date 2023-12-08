@@ -16,7 +16,7 @@ PACKAGE_ROOT = Path(plant_leave_diseases_model.__file__).resolve().parent
 ROOT = PACKAGE_ROOT.parent.parent
 arr=str(PACKAGE_ROOT).split("/")
 
-MODEL_NAME=arr[-1:]
+MODEL_NAME=arr[-1:][0]
 print("MODEL_NAME:",MODEL_NAME)
 PACKAGE_ROOT=str(ROOT)+"/"+MODEL_NAME
 print("PACKAGE_ROOT:",PACKAGE_ROOT)
