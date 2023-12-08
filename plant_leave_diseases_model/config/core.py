@@ -12,13 +12,13 @@ from strictyaml import YAML, load
 import plant_leave_diseases_model
 
 # Project Directories
-PACKAGE_ROOT_1 = Path(plant_leave_diseases_model.__file__).resolve().parent
-ROOT = PACKAGE_ROOT_1.parent.parent
-arr=str(PACKAGE_ROOT_1).split("/")
+PACKAGE_ROOT = Path(plant_leave_diseases_model.__file__).resolve().parent
+ROOT = PACKAGE_ROOT.parent.parent
+arr=str(PACKAGE_ROOT).split("/")
 
 MODEL_NAME=arr[-1:][0]
 print("MODEL_NAME:",MODEL_NAME)
-PACKAGE_ROOT= ROOT / MODEL_NAME
+#PACKAGE_ROOT= ROOT / MODEL_NAME
 print("PACKAGE_ROOT:",PACKAGE_ROOT)
 CONFIG_FILE_PATH = PACKAGE_ROOT / "config.yml"
 #print(CONFIG_FILE_PATH)
