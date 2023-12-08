@@ -7,7 +7,7 @@ import pandas as pd
 from plant_leave_diseases_model.config.core import config,PACKAGE_ROOT,TRAINED_MODEL_DIR
 from plant_leave_diseases_model.model import create_model
 from plant_leave_diseases_model.processing.data_manager import get_one_hot_data_for_input_classes, load_leaf_disease_dataset, load_train_dataset, load_validation_dataset, load_test_dataset, callbacks_and_save_model,prepare_img_data,get_class_file_list,get_model_file_name_path,get_master_classes_in_data_frame
-from plant_leave_diseases_model.processing.data_setup import test_directory,val_directory,train_directory,class_file_path
+from plant_leave_diseases_model.processing.data_setup import load_dataset_images, load_leaf_classes, prepare_data_images_per_class, print_dir, test_directory,val_directory,train_directory,class_file_path
 
 from sklearn.preprocessing import LabelBinarizer
 import cv2
@@ -84,4 +84,8 @@ def run_training() -> None:
     model.save(save_model_file_name)
     
 if __name__ == "__main__":
+    print_dir()
+    load_dataset_images()
+    load_leaf_classes()
+    prepare_data_images_per_class()
     run_training()
