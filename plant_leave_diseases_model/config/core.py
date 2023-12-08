@@ -1,7 +1,7 @@
 # Path setup, and access the config.yml file, datasets folder & trained models
 import sys
 from pathlib import Path
-sys.path.append(str(Path(__file__).resolve().parent.parent))
+sys.path.append(str(Path(__file__).resolve().parent.parent.parent.parent))
 
 from pathlib import Path
 from typing import Dict, List
