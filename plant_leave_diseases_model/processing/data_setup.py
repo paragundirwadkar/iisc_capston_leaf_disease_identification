@@ -95,7 +95,7 @@ def prepare_data_images_per_class():
     text_file.close()
     
     for i in range(config.model_config.no_of_classes):
-        img_class=img_classes[i].strip("\n")
+        img_class=img_classes[i]
         print("img_class::",img_class)
         file_dir=str(output_data_img_directory) + "/" +str(img_class)
         class_files_arr = [ f.path for f in os.scandir(file_dir ) if f.is_file() ]
