@@ -12,9 +12,9 @@ from strictyaml import YAML, load
 import plant_leave_diseases_model
 
 # Project Directories
-PACKAGE_ROOT = Path(plant_leave_diseases_model.__file__).resolve().parent
-ROOT = PACKAGE_ROOT.parent.parent
-arr=str(PACKAGE_ROOT).split("/")
+PACKAGE_ROOT_1 = Path(plant_leave_diseases_model.__file__).resolve().parent
+ROOT = PACKAGE_ROOT_1.parent.parent
+arr=str(PACKAGE_ROOT_1).split("/")
 
 MODEL_NAME=arr[-1:][0]
 print("MODEL_NAME:",MODEL_NAME)
