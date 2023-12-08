@@ -5,7 +5,10 @@ __pycache__/
 
 # C extensions
 *.so
+*.zip
 
+*.jpg
+*.JPG
 # Distribution / packaging
 .Python
 build/
@@ -25,6 +28,8 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
+
+Plant_leave_diseases_dataset_with_augmentation/
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
