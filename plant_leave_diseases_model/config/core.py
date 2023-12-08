@@ -12,7 +12,7 @@ from strictyaml import YAML, load
 import plant_leave_diseases_model
 
 # Project Directories
-PACKAGE_ROOT = Path(plant_leave_diseases_model.__file__).resolve().parent.parent
+PACKAGE_ROOT = Path(plant_leave_diseases_model.__file__).resolve().parent.parent.parent / "plant_leave_diseases_model" 
 ROOT = PACKAGE_ROOT.parent.parent
 arr=str(PACKAGE_ROOT).split("/")
 print("CORE:ROOT:",ROOT)
