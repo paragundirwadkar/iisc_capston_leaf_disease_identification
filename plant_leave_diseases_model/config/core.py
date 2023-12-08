@@ -12,8 +12,8 @@ from strictyaml import YAML, load
 import plant_leave_diseases_model
 
 # Project Directories
-PACKAGE_ROOT = Path(__file__).resolve().parent
-ROOT = PACKAGE_ROOT.parent
+PACKAGE_ROOT = Path(plant_leave_diseases_model.__file__).resolve().parent.parent
+ROOT = PACKAGE_ROOT.parent.parent
 arr=str(PACKAGE_ROOT).split("/")
 print("CORE:ROOT:",ROOT)
 MODEL_NAME=arr[-1:][0]
