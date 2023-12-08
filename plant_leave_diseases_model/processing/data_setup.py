@@ -7,7 +7,7 @@ from pathlib import Path
 
 from plant_leave_diseases_model.config.core import config
 from plant_leave_diseases_model import __version__ as _version
-from plant_leave_diseases_model.config.core import DATASET_DIR,PACKAGE_ROOT, DATA_STORE_PATH,DATA_STORE_FILE,config
+from plant_leave_diseases_model.config.core import DATASET_DIR,PACKAGE_ROOT, DATA_STORE_PATH,DATA_STORE_FILE,config,ROOT
 import wget
 import os
 from zipfile import ZipFile
@@ -30,6 +30,7 @@ def load_dataset_images():
     #output_directory = DATASET_DIR/"data.zip"
     print("PACKAGE_ROOT:",PACKAGE_ROOT)
     print("DATASET_DIR:",DATASET_DIR)
+    print("ROOT::",ROOT)
     
     if not os.path.exists(DATASET_DIR):
         print ("data_setup:load_dataset_images:DATASET_DIR::",DATASET_DIR," NOT EXISTS")
@@ -145,5 +146,5 @@ def copy_class_images(start,no_of_img_per_class,class_files_arr,img_class,dest_d
      
 if __name__ == "__main__":
     load_dataset_images()
-    load_leaf_classes()
-    prepare_data_images_per_class()
+    #load_leaf_classes()
+    #prepare_data_images_per_class()
