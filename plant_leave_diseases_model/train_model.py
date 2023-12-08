@@ -87,5 +87,5 @@ if __name__ == "__main__":
     print_dir()
     load_dataset_images()
     load_leaf_classes()
-    #prepare_data_images_per_class()
+    prepare_data_images_per_class()
     #run_training()

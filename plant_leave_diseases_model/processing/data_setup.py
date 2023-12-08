@@ -73,6 +73,7 @@ def load_leaf_classes():
     print ("data_setup:load_leaf_classes:reverse_sorted_items:",reverse_sorted_items)
     print("################################################")
     if os.path.exists(class_file_path):
+        print("data_setup:load_leaf_classes: file exists, hence deleting")
         os.remove(class_file_path)
     else:
         print("The file does not exist:",class_file_path)
@@ -80,6 +81,7 @@ def load_leaf_classes():
         print("data_setup:load_leaf_classes:f:",f)
         with open(class_file_path, 'a') as the_file:
             the_file.writelines(str(f))
+    
     
     return  class_file_path    
            
@@ -95,7 +97,7 @@ def prepare_data_images_per_class():
     text_file = open(class_file_path, "r")
     img_classes = text_file.readlines()
     print (img_classes)
-    print ("length:",len(img_classes))
+    print ("data_setup:prepare_data_images_per_class:length of classes:",len(img_classes))
     text_file.close()
     
     for i in range(config.model_config.no_of_classes):
