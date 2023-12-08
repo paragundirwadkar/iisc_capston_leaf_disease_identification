@@ -19,7 +19,7 @@ jobs:
     - name: Install dependencies
       run: pip install -r requirements/requirements.txt
     - name: Down load dataset and distribute data in test/val/train dirs 
-      run: python plant_leave_diseases_model/processing/data_setup.py
+      run: python plant_leave_diseases_model/data_img_setup.py
     - name: Train and save pipeline
       run: python plant_leave_diseases_model/train_pipeline.py
     - uses: actions/upload-artifact@v2
