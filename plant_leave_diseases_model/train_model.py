@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 from plant_leave_diseases_model.config.core import config,PACKAGE_ROOT,TRAINED_MODEL_DIR
 from plant_leave_diseases_model.model import create_model
-from plant_leave_diseases_model.processing.data_manager import load_train_dataset, load_validation_dataset, load_test_dataset, callbacks_and_save_model,prepare_img_data
+from plant_leave_diseases_model.processing.data_manager import get_one_hot_data_for_input_classes, load_train_dataset, load_validation_dataset, load_test_dataset, callbacks_and_save_model,prepare_img_data,get_class_file_list,get_model_file_name_path,get_master_classes_in_data_frame
 from plant_leave_diseases_model.processing.data_setup import test_directory,val_directory,train_directory,class_file_path
 
 from sklearn.preprocessing import LabelBinarizer
@@ -27,86 +27,85 @@ def run_training() -> None:
     """
     Train the model.
     """
-    #x,y=prepare_img_data(train_directory)
-    directory_root =val_directory
-    image_list, label_list = [], []
+   
+    ##############################
+    # Get validation image set
+    ##############################
+    train_image_list, train_label_list = prepare_img_data(val_directory)
     
-    directory_root =val_directory
-    image_list, label_list = prepare_img_data(directory_root)
-        
-    image_size = len(image_list)
-    print("image_size:",image_size)
-    print("label_list:",label_list)
-    print("len(image_list):",len(image_list))
+    ##############################
+    # Get validation image set
+    ##############################
+    val_image_list, val_label_list = prepare_img_data(train_directory)  
     
-    #e_dataframe = pd.DataFrame(label_list)  
-    n_classes=5
+    print("train_image_list_size:",len(train_image_list))
+    print("train_label_list_size:",len(train_label_list))
+    print("train_image_list.shape:",train_image_list.shape)
 
-    '''
-    label_binarizer = LabelBinarizer()
-    image_labels = label_binarizer.fit_transform(label_list)
-    pickle.dump(label_binarizer,open('label_transform.pkl', 'wb'))
-    n_classes = len(label_binarizer.classes_)
-    print("n_classes::",n_classes)
-    print("image_labels:",image_labels)
-    print("image_labels:",np.array(image_labels))
-    '''
-    
-    np_image_list = np.array(image_list, dtype=np.float16) / 255.0
-    
-    print("np_image_list.shape:",np_image_list.shape)
-    #print("image_labels.shape:",image_labels.shape)
-    
-   
-    text_file = open(class_file_path, "r")
-    img_classes = text_file.readlines()
-    print (img_classes)
-    print ("length:",len(img_classes),"::img_classes:",img_classes[0])
-    text_file.close()
-   
-    leaf_disease_classes_from_input = pd.DataFrame(label_list,columns=['class'])
-    print("leaf_disease_classes_from_input:",leaf_disease_classes_from_input)
-    
-    img_classes = config.model_config.leaf_class_master_category_list 
-    leaf_disease_master_classes = pd.DataFrame(img_classes,columns=['class'])
+    print("val_image_list_size:",len(val_image_list))
+    print("val_label_list_size:",len(val_label_list))
+    print("val_image_list.shape:",val_image_list.shape)
+       
+    ##########################################
+    # Get master class data in data frames
+    ##########################################
+    leaf_disease_master_classes = get_master_classes_in_data_frame()    
     print("leaf_disease_master_classes:",leaf_disease_master_classes)
+
+    ##########################################
+    # Get one hot encoded train labels
+    ##########################################
+    y_train = get_one_hot_data_for_input_classes(leaf_disease_master_classes, train_label_list)
+  
+    print("len of final y_train classes:",len(y_train))
     
     
-    
-    ohe = OneHotEncoder()
-    ohe.fit(leaf_disease_master_classes[['class']])
-    transformed = ohe.transform(leaf_disease_classes_from_input[['class']])
-    #transformed = ohe.fit_transform(e_dataframe[['class']])
-    print(transformed.toarray())
-    print("len of final classes:",len(transformed.toarray()))
-    #print(transformed)
-    
+    ##########################################
+    # Get one hot encoded validation labels
+    ##########################################
+    y_val = get_one_hot_data_for_input_classes(leaf_disease_master_classes, val_label_list)
+        
+    print("len of final y_val classes:",len(y_val))
+        
+    ##############################################################
+    # Getting no of classes to pass thw model at last layer
+    ##############################################################
     n_classes = len(leaf_disease_master_classes)
     
     print("n_classes::",n_classes)
-    print("config.model_config.input_shape::",tuple(config.model_config.input_shape))
+    #print("config.model_config.input_shape::",tuple(config.model_config.input_shape))
+    
+    ################################
     # Create model
+    ################################
     model = create_model(input_shape = config.model_config.input_shape, 
                           optimizer = config.model_config.optimizer, 
                           loss = config.model_config.loss, 
                           metrics = [config.model_config.accuracy_metric],
                           n_classes = n_classes
                         )
-
-
+    ################################
+    # Training the model
+    ################################
+    x_train=train_image_list
+    y_train=y_train
+    x_val=val_image_list
+    
     history = model.fit(
-    np_image_list, transformed.toarray(), batch_size=5,
-    #validation_data=(x_test, y_test),
+    x_train, 
+    y_train, 
+    batch_size=config.model_config.batch_size,
+    validation_data=(x_val, y_val),
     #steps_per_epoch=len(x_train) // 5,
     #callbacks = callbacks_and_save_model(),
     epochs=1
     )
-    
-    save_file_name = f"{config.app_config.model_save_file}{_version}.keras"
+
+    ################################
+    # Saving the model
+    ################################
+    save_file_name = get_model_file_name_path()
     model.save(str(TRAINED_MODEL_DIR)+"/"+str(save_file_name))
-          
-    
-    
     
 if __name__ == "__main__":
     run_training()

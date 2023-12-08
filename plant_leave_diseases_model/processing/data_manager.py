@@ -5,18 +5,20 @@ sys.path.append(str(Path(__file__).resolve().parent.parent.parent))
 import typing as t
 from pathlib import Path
 
+import pandas as pd
 import tensorflow as tf
 from tensorflow import keras
 from keras.utils import image_dataset_from_directory
 from plant_leave_diseases_model.config.core import config
 from plant_leave_diseases_model import __version__ as _version
 from plant_leave_diseases_model.config.core import DATASET_DIR, TRAINED_MODEL_DIR, config
-from plant_leave_diseases_model.processing.data_setup import load_dataset_images,load_leaf_classes,test_directory,val_directory,train_directory
+from plant_leave_diseases_model.processing.data_setup import load_dataset_images,load_leaf_classes,test_directory,val_directory,train_directory,class_file_path
 
 import cv2
 from keras.preprocessing.image import img_to_array, array_to_img
 import numpy as np
 from os import listdir
+from sklearn.preprocessing import OneHotEncoder
 
 def download_images():
     load_dataset_images()
@@ -101,10 +103,10 @@ def convert_image_to_array(image_dir):
         print(f"Error : {e}")
         return None
 
-image_list, label_list = [], []
+
     
 def prepare_img_data(directory_root):
-    
+    image_list, label_list = [], []    
     try:
         print("[INFO] Loading images ...")
         root_dir = listdir(directory_root)
@@ -118,6 +120,29 @@ def prepare_img_data(directory_root):
                     image_list.append(convert_image_to_array(image_directory))
                     label_list.append(plant_folder)
         print("[INFO] Image loading completed")
-        return image_list,label_list
+        np_image_list = np.array(image_list, dtype=np.float16) / config.model_config.scaling_factor
+        leaf_disease_classes_from_input = pd.DataFrame(label_list,columns=['class'])
+        return np_image_list,leaf_disease_classes_from_input
     except Exception as e:
         print(f"Error : {e}")
+        
+
+def get_class_file_list(class_file_path):
+    text_file = open(class_file_path, "r")
+    img_classes = text_file.readlines()
+    print (img_classes)
+    print ("length:",len(img_classes),"::img_classes:",img_classes[0])
+    text_file.close()
+    return [ class_name.replace('\n','') for class_name in img_classes ]        
+
+def get_model_file_name_path():
+    return  f"{config.app_config.model_save_file}{_version}.keras"
+
+def get_master_classes_in_data_frame():
+    return pd.DataFrame(get_class_file_list(class_file_path),columns=['class'])
+
+def get_one_hot_data_for_input_classes(leaf_disease_master_classes, lable_list):
+    ohe = OneHotEncoder()
+    ohe.fit(leaf_disease_master_classes[['class']])
+    transformed = ohe.transform(lable_list[['class']])
+    return transformed.toarray()
