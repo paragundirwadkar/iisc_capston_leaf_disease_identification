@@ -80,7 +80,7 @@ def load_leaf_classes():
     for f in reverse_sorted_items:
         print("data_setup:load_leaf_classes:f:",f)
         with open(class_file_path, 'a') as the_file:
-            the_file.writelines(str(f))
+            the_file.write(str(f)+"\n")
     
     
     return  class_file_path    
@@ -101,7 +101,7 @@ def prepare_data_images_per_class():
     text_file.close()
     
     for i in range(config.model_config.no_of_classes):
-        img_class=img_classes[i]
+        img_class=img_classes[i].strip("\n")
         print("img_class::",img_class)
         file_dir=str(output_data_img_directory) + "/" +str(img_class)
         class_files_arr = [ f.path for f in os.scandir(file_dir ) if f.is_file() ]
