@@ -140,5 +140,5 @@ def copy_class_images(start,no_of_img_per_class,class_files_arr,img_class,dest_d
      
 if __name__ == "__main__":
     load_dataset_images()
-    load_leaf_classes()
-    prepare_data_images_per_class()
+    #load_leaf_classes()
+    #prepare_data_images_per_class()
