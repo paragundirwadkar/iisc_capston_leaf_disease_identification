@@ -22,6 +22,9 @@ train_directory = str(PACKAGE_ROOT) + "/" + str(DATA_STORE_PATH) + "/TRAIN"
 
 class_file_path = str(PACKAGE_ROOT) + "/" + str(config.app_config.dataset_class_dir)+"/"+str(config.app_config.dataset_class_file)
 
+def print_dir():
+    print("print_dir:PACKAGE_ROOT:",PACKAGE_ROOT)
+    print("print_dir:ROOT:",ROOT)
     
 def load_dataset_images():
     print("In data_setup:load_dataset_images")
