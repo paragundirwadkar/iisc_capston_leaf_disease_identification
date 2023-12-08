@@ -19,7 +19,7 @@ jobs:
     - name: Install dependencies
       run: pip install -r requirements/requirements.txt
     - name: Train and save pipeline
-      run: python plant_leave_diseases_model/train_pipeline.py
+      run: python plant_leave_diseases_model/train_model.py
     - uses: actions/upload-artifact@v2
       with:
         name: my-trained-pipeline
