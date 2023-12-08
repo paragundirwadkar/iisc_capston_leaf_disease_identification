@@ -1,6 +1,6 @@
 import sys
 from pathlib import Path
-sys.path.append(str(Path(__file__).resolve().parent))
+sys.path.append(str(Path(__file__).resolve().parent.parent))
 
 from plant_leave_diseases_model.processing.data_setup import load_dataset_images, print_dir
 
