@@ -40,7 +40,7 @@ def load_dataset_images():
     
     print("data_setup:load_dataset_images:output_directory_file:",output_directory_file) 
     #wget {url} -O {download_path}
-    #wget.download(url,out=output_directory_file)
+    wget.download(url,out=output_directory_file)
     
     if os.path.isfile(output_directory_file):
         print("data_setup:load_dataset_images: file downloaded successfully:",output_directory_file)
