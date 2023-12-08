@@ -136,7 +136,8 @@ def get_class_file_list(class_file_path):
     return [ class_name.replace('\n','') for class_name in img_classes ]        
 
 def get_model_file_name_path():
-    return  f"{config.app_config.model_save_file}{_version}.keras"
+    
+    return  f"{TRAINED_MODEL_DIR}/{config.app_config.model_save_file}{_version}.keras"
 
 def get_master_classes_in_data_frame():
     return pd.DataFrame(get_class_file_list(class_file_path),columns=['class'])
@@ -146,3 +147,28 @@ def get_one_hot_data_for_input_classes(leaf_disease_master_classes, lable_list):
     ohe.fit(leaf_disease_master_classes[['class']])
     transformed = ohe.transform(lable_list[['class']])
     return transformed.toarray()
+
+def load_leaf_disease_dataset(img_directory):
+    ##############################
+    # Get validation image set
+    ##############################
+    image_list, label_list = prepare_img_data(img_directory)
+    print("image_list_size:",len(image_list))
+    print("label_list_size:",len(label_list))
+    print("image_list.shape:",image_list.shape)
+    
+    ##########################################
+    # Get master class data in data frames
+    ##########################################
+    leaf_disease_master_classes = get_master_classes_in_data_frame()    
+    print("leaf_disease_master_classes:",leaf_disease_master_classes)
+    
+    ##########################################
+    # Get one hot encoded test labels
+    ##########################################
+    y_lable = get_one_hot_data_for_input_classes(leaf_disease_master_classes, label_list)
+    print("len of final y_lable classes:",len(y_lable))
+    
+    return image_list, y_lable,leaf_disease_master_classes
+    
+ 

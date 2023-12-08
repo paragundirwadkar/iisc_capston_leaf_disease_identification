@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 from plant_leave_diseases_model.config.core import config,PACKAGE_ROOT,TRAINED_MODEL_DIR
 from plant_leave_diseases_model.model import create_model
-from plant_leave_diseases_model.processing.data_manager import get_one_hot_data_for_input_classes, load_train_dataset, load_validation_dataset, load_test_dataset, callbacks_and_save_model,prepare_img_data,get_class_file_list,get_model_file_name_path,get_master_classes_in_data_frame
+from plant_leave_diseases_model.processing.data_manager import get_one_hot_data_for_input_classes, load_leaf_disease_dataset, load_train_dataset, load_validation_dataset, load_test_dataset, callbacks_and_save_model,prepare_img_data,get_class_file_list,get_model_file_name_path,get_master_classes_in_data_frame
 from plant_leave_diseases_model.processing.data_setup import test_directory,val_directory,train_directory,class_file_path
 
 from sklearn.preprocessing import LabelBinarizer
@@ -27,53 +27,31 @@ def run_training() -> None:
     """
     Train the model.
     """
-   
-    ##############################
-    # Get validation image set
-    ##############################
-    train_image_list, train_label_list = prepare_img_data(val_directory)
     
-    ##############################
-    # Get validation image set
-    ##############################
-    val_image_list, val_label_list = prepare_img_data(train_directory)  
-    
-    print("train_image_list_size:",len(train_image_list))
-    print("train_label_list_size:",len(train_label_list))
-    print("train_image_list.shape:",train_image_list.shape)
+    ##########################################
+    # Get train data : x_train, y_train
+    ##########################################
+    x_train, y_train,leaf_disease_master_classes = load_leaf_disease_dataset(test_directory)
 
-    print("val_image_list_size:",len(val_image_list))
-    print("val_label_list_size:",len(val_label_list))
-    print("val_image_list.shape:",val_image_list.shape)
-       
+    print("x_train_size:",len(x_train))
+    print("y_train_size:",len(y_train))
+    print("x_train.shape:",x_train.shape)
+    print("y_train.shape:",y_train.shape)
+    
     ##########################################
-    # Get master class data in data frames
+    # Get validation data : x_val, y_val
     ##########################################
-    leaf_disease_master_classes = get_master_classes_in_data_frame()    
-    print("leaf_disease_master_classes:",leaf_disease_master_classes)
+    x_val, y_val,leaf_disease_master_classes = load_leaf_disease_dataset(val_directory)
 
-    ##########################################
-    # Get one hot encoded train labels
-    ##########################################
-    y_train = get_one_hot_data_for_input_classes(leaf_disease_master_classes, train_label_list)
-  
-    print("len of final y_train classes:",len(y_train))
+    print("x_val_size:",len(x_val))
+    print("y_val_size:",len(y_val))
+    print("x_val.shape:",x_val.shape)
+    print("y_val.shape:",y_val.shape)
     
-    
-    ##########################################
-    # Get one hot encoded validation labels
-    ##########################################
-    y_val = get_one_hot_data_for_input_classes(leaf_disease_master_classes, val_label_list)
-        
-    print("len of final y_val classes:",len(y_val))
-        
     ##############################################################
     # Getting no of classes to pass thw model at last layer
     ##############################################################
     n_classes = len(leaf_disease_master_classes)
-    
-    print("n_classes::",n_classes)
-    #print("config.model_config.input_shape::",tuple(config.model_config.input_shape))
     
     ################################
     # Create model
@@ -87,10 +65,7 @@ def run_training() -> None:
     ################################
     # Training the model
     ################################
-    x_train=train_image_list
-    y_train=y_train
-    x_val=val_image_list
-    
+  
     history = model.fit(
     x_train, 
     y_train, 
@@ -104,8 +79,9 @@ def run_training() -> None:
     ################################
     # Saving the model
     ################################
-    save_file_name = get_model_file_name_path()
-    model.save(str(TRAINED_MODEL_DIR)+"/"+str(save_file_name))
+    save_model_file_name = get_model_file_name_path()
+    print("save_model_file_name:",save_model_file_name)
+    model.save(save_model_file_name)
     
 if __name__ == "__main__":
     run_training()
