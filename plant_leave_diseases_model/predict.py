@@ -28,17 +28,27 @@ def make_prediction(*, test_dir_img_file_path) -> dict:
             image_list.append(convert_image_to_array(img_file_path))
             
     np_image_list = np.array(image_list, dtype=np.float16) / config.model_config.scaling_factor
-        
+           
     print("np_image_list.shape:",np_image_list.shape)
+    results = {"predictions": None, "version": _version}
     
+    load_model_and_predict(np_image_list) 
+    pred_labels = model_file_name = get_model_file_name_path()
+        
+    results = {"predictions": pred_labels, "version": _version}
+    
+
+    return results
+
+def load_model_and_predict(x_test):
     model_file_name = get_model_file_name_path()
     
     print("loading mode file:",model_file_name)
     
     model = load_model(file_name = model_file_name)
     
-    predictions = model.predict(np_image_list,verbose = 0)
-    results = {"predictions": None, "version": _version}
+    predictions = model.predict(x_test,verbose = 0)
+    
     ###########################################
     # Geting array of master class array
     ###########################################
@@ -51,19 +61,11 @@ def make_prediction(*, test_dir_img_file_path) -> dict:
         np.multiply(np.array(pred), 100000)
         max_index = np.multiply(np.array(pred), 100000).argmax()
         leaf_pred_label=master_class_arr[max_index]
-        print("max_index::",max_index,"master_class_arr:",master_class_arr[max_index])
+        print("load_model_and_predict:max_index::",max_index,"master_class_arr:",master_class_arr[max_index])
         pred_labels.append(leaf_pred_label)
         
-    # pred_labels = []
-    # for i in predictions:
-    #     pred_labels.append(config.model_config.label_mappings[int(predictions + 0.5)])
-        
-    results = {"predictions": pred_labels, "version": _version}
+    return pred_labels    
     
-
-    return predictions
-
-
 if __name__ == "__main__":
 
     # Define directory where test images are loaded
