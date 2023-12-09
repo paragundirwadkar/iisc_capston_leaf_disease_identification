@@ -28,6 +28,10 @@ def test_make_prediction(sample_input_data):
     
     #y_pred = results[0]
     #print("y_pred::",y_pred)
+    model_file_name = get_model_file_name_path()
+    model = load_model(file_name = model_file_name)
+    test_loss, test_acc = model.evaluate(data, labels, verbose=0)
+    print("test_make_prediction:test_accuracy:(test_loss,test_acc):",test_loss,",",test_acc)
     # Then
     assert 1==0
     #assert y_pred is not None
