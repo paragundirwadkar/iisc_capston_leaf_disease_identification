@@ -1,7 +1,7 @@
 import sys
 from pathlib import Path
 
-from plant_leave_diseases_model.predict import make_prediction
+
 sys.path.append(str(Path(__file__).resolve().parent.parent))
 
 import numpy as np
@@ -21,6 +21,7 @@ import sklearn.preprocessing
 import pickle
 from sklearn.preprocessing import OneHotEncoder
 from plant_leave_diseases_model import __version__ as _version 
+from plant_leave_diseases_model.predict import make_prediction
 
 default_image_size = tuple((256, 256))
     
