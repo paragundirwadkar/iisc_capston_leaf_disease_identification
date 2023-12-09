@@ -21,7 +21,7 @@ import sklearn.preprocessing
 import pickle
 from sklearn.preprocessing import OneHotEncoder
 from plant_leave_diseases_model import __version__ as _version 
-from plant_leave_diseases_model.predict import make_prediction
+#from plant_leave_diseases_model.predict import make_prediction
 
 default_image_size = tuple((256, 256))
     
@@ -100,6 +100,6 @@ if __name__ == "__main__":
     print("###################### PREDICT ##########################")
     print("###################### ####### ##########################")
 
-    test_dir_img_file_path=test_directory+"/Apple___Apple_scab"
-    print("test_dir_img_file_path::",test_dir_img_file_path) 
-    make_prediction(test_dir_img_file_path = test_dir_img_file_path)
+    #test_dir_img_file_path=test_directory+"/Apple___Apple_scab"
+    #print("test_dir_img_file_path::",test_dir_img_file_path) 
+    #make_prediction(test_dir_img_file_path = test_dir_img_file_path)

@@ -56,6 +56,6 @@ def make_prediction(*, test_dir_img_file_path) -> dict:
 if __name__ == "__main__":
 
     # Define directory where test images are loaded
-    #test_dir_img_file_path=test_directory+"/Apple___Apple_scab"
-    #print("test_dir_img_file_path::",test_dir_img_file_path) 
-    #make_prediction(test_dir_img_file_path = test_dir_img_file_path)
+    test_dir_img_file_path=test_directory+"/Apple___Apple_scab"
+    print("test_dir_img_file_path::",test_dir_img_file_path) 
+    make_prediction(test_dir_img_file_path = test_dir_img_file_path)
