@@ -76,7 +76,7 @@ def run_training() -> None:
     validation_data=(x_val, y_val),
     #steps_per_epoch=len(x_train) // 5,
     #callbacks = callbacks_and_save_model(),
-    epochs=1
+    epochs=config.model_config.epochs
     )
 
     ################################

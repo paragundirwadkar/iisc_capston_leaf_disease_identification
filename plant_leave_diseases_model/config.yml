@@ -19,7 +19,7 @@ model_save_file: plant_leave_diseases_model_output_v
 image_size: 
   - 256
   - 256
-batch_size: 5
+batch_size: 32
 scaling_factor: 255.0
 rotation: 0.1
 zoom: 0.2
