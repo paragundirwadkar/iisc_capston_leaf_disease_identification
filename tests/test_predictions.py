@@ -15,14 +15,14 @@ from plant_leave_diseases_model.processing.data_manager import get_model_file_na
 from plant_leave_diseases_model.processing.data_setup import load_dataset_images, load_leaf_classes, prepare_data_images_per_class, print_dir
 
 
-def test_make_prediction(sample_input_data):
+def test_accuracy(sample_input_data):
     
     # Given
     data, labels = sample_input_data
     data_in = data[0]
-    print("test_make_prediction:data_in:",data_in)
-    print("test_make_prediction:data:shape",data.shape)
-    print("test_make_prediction:data_in:shape:",data_in.shape)
+    print("test_accuracy:data_in:",data_in)
+    print("test_accuracy:data:shape",data.shape)
+    print("test_accuracy:data_in:shape:",data_in.shape)
     # When
     #results = load_model_and_predict(data_in)
     
@@ -31,9 +31,9 @@ def test_make_prediction(sample_input_data):
     model_file_name = get_model_file_name_path()
     model = load_model(file_name = model_file_name)
     test_loss, test_acc = model.evaluate(data, labels, verbose=0)
-    print("test_make_prediction:test_accuracy:(test_loss,test_acc):",test_loss,",",test_acc)
+    print("test_accuracy:test_accuracy:(test_loss,test_acc):",test_loss,",",test_acc)
     # Then
-    assert 1==0
+    assert test_acc > 0.1
     #assert y_pred is not None
     #assert y_pred in ['cat', 'dog']
     #assert results['version'] == _version
