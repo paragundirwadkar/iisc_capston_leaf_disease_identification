@@ -34,7 +34,7 @@ def make_prediction(*, test_dir_img_file_path) -> dict:
         
     print("np_image_list.shape:",np_image_list.shape)
     
-    model_file_name = str(TRAINED_MODEL_DIR)+"/"+get_model_file_name_path()
+    model_file_name = get_model_file_name_path()
     
     print("loading mode file:",model_file_name)
     
@@ -56,6 +56,6 @@ def make_prediction(*, test_dir_img_file_path) -> dict:
 if __name__ == "__main__":
 
     # Define directory where test images are loaded
-    test_dir_img_file_path=test_directory+"/Apple___Apple_scab"
-    print("test_dir_img_file_path::",test_dir_img_file_path) 
-    make_prediction(test_dir_img_file_path = test_dir_img_file_path)
+    #test_dir_img_file_path=test_directory+"/Apple___Apple_scab"
+    #print("test_dir_img_file_path::",test_dir_img_file_path) 
+    #make_prediction(test_dir_img_file_path = test_dir_img_file_path)

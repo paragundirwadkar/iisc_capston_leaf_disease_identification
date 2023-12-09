@@ -20,8 +20,6 @@ jobs:
       run: pip install -r requirements/requirements.txt
     - name: Train and save 
       run: python plant_leave_diseases_model/train_model.py
-    - name: Test / Predict
-      run: python plant_leave_diseases_model/predict.py  
     - uses: actions/upload-artifact@v2
       with:
         name: my-trained-pipeline

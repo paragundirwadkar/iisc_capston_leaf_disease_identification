@@ -1,5 +1,7 @@
 import sys
 from pathlib import Path
+
+from plant_leave_diseases_model.predict import make_prediction
 sys.path.append(str(Path(__file__).resolve().parent.parent))
 
 import numpy as np
@@ -80,7 +82,10 @@ def run_training() -> None:
     # Saving the model
     ################################
     save_model_file_name = get_model_file_name_path()
+    print("###################### ####### ##########################")
     print("save_model_file_name:",save_model_file_name)
+    print("###################### ####### ##########################")
+
     model.save(save_model_file_name)
     
 if __name__ == "__main__":
@@ -89,3 +94,11 @@ if __name__ == "__main__":
     load_leaf_classes()
     prepare_data_images_per_class()
     run_training()
+    # Define directory where test images are loaded
+    print("###################### ####### ##########################")
+    print("###################### PREDICT ##########################")
+    print("###################### ####### ##########################")
+
+    test_dir_img_file_path=test_directory+"/Apple___Apple_scab"
+    print("test_dir_img_file_path::",test_dir_img_file_path) 
+    make_prediction(test_dir_img_file_path = test_dir_img_file_path)
