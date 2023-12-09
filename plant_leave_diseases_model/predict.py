@@ -49,18 +49,19 @@ def make_prediction(*, test_dir_img_file_path) -> dict:
     print("master_class_arr:",master_class_arr)
     
     print(predictions)
-    
+    pred_labels = []
     for pred in predictions:
         np.multiply(np.array(pred), 100000)
         max_index = np.multiply(np.array(pred), 100000).argmax()
+        leaf_pred_label=master_class_arr[max_index]
         print("max_index::",max_index,"master_class_arr:",master_class_arr[max_index])
-        
+        pred_labels.append(leaf_pred_label)
         
     # pred_labels = []
     # for i in predictions:
     #     pred_labels.append(config.model_config.label_mappings[int(predictions + 0.5)])
         
-    #results = {"predictions": pred_labels, "version": _version}
+    results = {"predictions": pred_labels, "version": _version}
     
 
     return predictions
