@@ -21,14 +21,15 @@ def test_make_prediction(sample_input_data):
     data, labels = sample_input_data
     data_in = data[0]
     print("test_make_prediction:data_in:",data_in)
-
+    print("test_make_prediction:data:shape",data.shape)
+    print("test_make_prediction:data_in:shape:",data_in.shape)
     # When
     #results = load_model_and_predict(data_in)
     
     #y_pred = results[0]
     #print("y_pred::",y_pred)
     # Then
-    assert 1==1
+    assert 1==0
     #assert y_pred is not None
     #assert y_pred in ['cat', 'dog']
     #assert results['version'] == _version
