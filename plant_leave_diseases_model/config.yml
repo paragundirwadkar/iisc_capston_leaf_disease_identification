@@ -50,7 +50,7 @@ label_mappings:
   0: cat
   1: dog
 
-no_of_classes: 39
+no_of_classes: 5
 no_of_img_per_class_test: 5
 no_of_img_per_class_train: 5
 no_of_img_per_class_val: 5
