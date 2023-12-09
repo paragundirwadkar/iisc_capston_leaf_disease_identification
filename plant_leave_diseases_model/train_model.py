@@ -34,7 +34,7 @@ def run_training() -> None:
     ##########################################
     # Get train data : x_train, y_train
     ##########################################
-    x_train, y_train,leaf_disease_master_classes = load_leaf_disease_dataset(test_directory)
+    x_train, y_train,leaf_disease_master_classes = load_leaf_disease_dataset(train_directory)
 
     print("x_train_size:",len(x_train))
     print("y_train_size:",len(y_train))

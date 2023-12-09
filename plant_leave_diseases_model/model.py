@@ -72,7 +72,7 @@ def create_model(input_shape, optimizer, loss, metrics,n_classes):
     
     optimizer = Adam(learning_rate=config.model_config.learning_rate)
     # distribution
-    model.compile(loss="binary_crossentropy", optimizer=optimizer,metrics=["accuracy"])
+    model.compile(loss=loss, optimizer=optimizer,metrics=["accuracy"])
     
     model.summary()
     return model
