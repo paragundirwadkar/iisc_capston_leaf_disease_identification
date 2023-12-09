@@ -90,7 +90,7 @@ jobs:
   #       DOCKER_USER: ${{ secrets.DOCKER_USER_NAME }}
   #       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASS_TOKEN }}
   #     #run: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-  #     run: sudo docker login -u paragundirwadkar -p 9890041098 
+  #     run: sudo docker login -u userid -p  pass
 
   #   - name: Build the Docker image for Fastapi app
   #     env:
