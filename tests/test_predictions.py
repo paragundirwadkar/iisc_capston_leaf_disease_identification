@@ -16,11 +16,6 @@ from plant_leave_diseases_model.processing.data_setup import load_dataset_images
 
 
 def test_make_prediction(sample_input_data):
-    #Image download and Setup
-    print_dir()
-    load_dataset_images()
-    load_leaf_classes()
-    prepare_data_images_per_class()
     
     # Given
     data, labels = sample_input_data
