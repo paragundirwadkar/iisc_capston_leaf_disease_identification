@@ -22,32 +22,32 @@ jobs:
       run: python plant_leave_diseases_model/train_model.py
     - name: Test / Predict
       run: python plant_leave_diseases_model/predict.py  
-    - name: Testing and accuracy
-      run: pytest   
+    #- name: Testing and accuracy
+    #  run: pytest   
     - uses: actions/upload-artifact@v2
       with:
         name: my-trained-model
         path: plant_leave_diseases_model/trained_models/*.keras
 
-  # test:
-  #   needs: train
-  #   runs-on: ubuntu-latest
-  #   strategy:
-  #     fail-fast: false
-  #   steps:
-  #   - uses: actions/checkout@v3
-  #   - name: Set up Python 3.10
-  #     uses: actions/setup-python@v3
-  #     with:
-  #       python-version: '3.10'
-  #   - uses: actions/download-artifact@v2
-  #     with:
-  #       name: my-trained-model
-  #   - run: mv *.keras plant_leave_diseases_model/trained_models/
-  #   - name: Install dependencies
-  #     run: pip install -r requirements/test_requirements.txt
-  #   - name: Test with pytest
-  #     run: pytest
+  test:
+    needs: train
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.10'
+    - uses: actions/download-artifact@v2
+      with:
+        name: my-trained-model
+    - run: mv *.keras plant_leave_diseases_model/trained_models/
+    - name: Install dependencies
+      run: pip install -r requirements/test_requirements.txt
+    - name: Test with pytest
+      run: pytest
 
   # build:
   #   needs: [train, test]

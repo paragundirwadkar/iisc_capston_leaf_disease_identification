@@ -11,10 +11,10 @@ from plant_leave_diseases_model.processing.data_setup import load_dataset_images
 @pytest.fixture
 def sample_input_data():
     #Image download and Setup
-    #print_dir()
-    #load_dataset_images()
-    #load_leaf_classes()
-    #prepare_data_images_per_class()
+    print_dir()
+    load_dataset_images()
+    load_leaf_classes()
+    prepare_data_images_per_class()
     
     ##########################################
     # Get train data : x_train, y_train
