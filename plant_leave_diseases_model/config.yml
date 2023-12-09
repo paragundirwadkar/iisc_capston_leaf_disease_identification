@@ -33,7 +33,7 @@ input_shape:
   - 256
   - 256
   - 3
-epochs: 1
+epochs: 10
 optimizer: adam
 loss: categorical_crossentropy
 accuracy_metric: accuracy
@@ -51,7 +51,7 @@ label_mappings:
 
 no_of_classes: 39
 no_of_img_per_class_test: 5
-no_of_img_per_class_train: 50
+no_of_img_per_class_train: 100
 no_of_img_per_class_val: 5
 
 leaf_class_category_mappings:

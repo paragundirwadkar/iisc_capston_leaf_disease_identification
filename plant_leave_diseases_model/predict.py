@@ -14,9 +14,6 @@ from plant_leave_diseases_model.config.core import TRAINED_MODEL_DIR, config
 from plant_leave_diseases_model.processing.data_manager import convert_image_to_array, get_class_file_list, get_model_file_name_path, load_leaf_disease_dataset, load_model, load_test_dataset
 from plant_leave_diseases_model.processing.data_setup import test_directory,class_file_path
 
-#model_file_name = f"{config.app_config.model_save_file}{_version}"
-#clf_model = load_model(file_name = model_file_name)
-
 
 def make_prediction(*, test_dir_img_file_path) -> dict:
     """Make a prediction using a saved model """
